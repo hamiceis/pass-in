@@ -1,0 +1,70 @@
+## Gerar um Slug para URL
+
+export function generateSlug(text: string): string {
+             return text 
+             .normalize("NFD")  Normaliza o texto para a forma NFD (Forma Normal Descomposta)
+             .replace(/[\u0300-\u036f]/g, "")  Remove os caracteres diacríticos (acentos)
+             .toLocaleLowerCase()  Converte o texto para minúsculas
+             .replace(/[^\w\s-]/g, '')  Remove caracteres não-alfanuméricos exceto espaços e hífens
+             .replace(/\s+/g, "-")  Substitui espaços por hífens
+ }
+
+
+### Definindo Validação para as rotas do Fastify
+
+ - Após instalar o fastify-type-provider-zod 
+
+      $ npm i fastify-type-provider-zod
+
+
+ - Você precisa configurar dessa forma:
+
+
+ import fastify from "fastify"
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
+
+
+const app = fastify()
+
+app.setValidatorCompiler(validatorCompiler) // Adicionando  o compilador de validação do Zod para Routes no Fasitify
+app.setSerializerCompiler(serializerCompiler) //  Para validação e serialização de dados de resposta
+
+
+//Na rota você precisa usar da seguinte forma:
+
+app.withTypeProvider<ZodTypeProvider>().get("/", { options }, async (req, reply) => {})
+
+...
+////
+
+
+### usando schema Routes do Fastify
+
+
+/*
+//Explicando partes do código:
+
+//withTypeProvider<ZodTypeProvider>()  é um decorator que permite a definição de tipos Zod para os parâmetros da função.
+app.withTypeProvider<ZodTypeProvider>().post(
+    "/events",
+  
+    // antes do handler(req, reply), ele pode receber um Object com opções que podemos definir um schema  de validação para os dados da req e response.
+
+    //Aqui estamos definindo que o body vai ter essas especificações  de dados, usando a lib Zod para validação dos dados, e definindo que a response vai ter o código 201 com o retorno do obj eventId que retorna uma string,
+    além body, podemos colocar Params, e queryParams, como também headers, e outras definições 
+    {
+      schema: {
+        body: z.object({
+          title: z.string().min(4),
+          details: z.string().nullable(),
+          maximumAttendees: z.number().int().positive().nullable(),
+        }),
+        response: {
+          201: z.object({
+            eventId: z.string().uuid(),
+          }),
+        },
+      },
+    },
+
+*/

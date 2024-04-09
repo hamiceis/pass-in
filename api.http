@@ -1,0 +1,42 @@
+POST http://localhost:3333/events
+Content-Type: application/json
+
+{
+  "title": "NLW IA",
+  "details": "Um evento para quem quer apredener sobre IA",
+  "maximumAttendees": 5
+}
+
+### 
+
+POST http://localhost:3333/events/9510dff5-6a95-4ef5-8f6d-224898b93ff1/attendees
+Content-Type: application/json
+
+{
+  "name": "Michael",
+  "email": "michael@rocketseat.com.br"
+}
+
+###
+
+GET http://localhost:3333/events/9510dff5-6a95-4ef5-8f6d-224898b93ff1
+Content-Type: application/json
+
+###
+
+GET http://localhost:3333/ateendees/5/badge
+Content-Type:  application/json
+
+###
+
+GET http://localhost:3333/attendees/1/check-in
+Content-Type: application/json
+
+
+###
+
+
+GET http://localhost:3333/events/3371a6e7-e26a-4a6d-9393-ba412dcec40b/attendees?query=hamiceis
+Content-Type: application/json
+
+
